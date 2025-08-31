@@ -1,0 +1,42 @@
+name: n-port-fetcher
+services:
+  - name: backend
+    source_dir: /backend
+    github:
+      repo: uniqualid/n-port-fetcher
+      branch: main
+    run_command: uvicorn main:app --host 0.0.0.0 --port $PORT
+    environment_slug: python
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    envs:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: PORT
+        value: "8080"
+
+  - name: frontend
+    source_dir: /frontend
+    github:
+      repo: uniqualid/n-port-fetcher
+      branch: main
+    run_command: npm run build && npx serve -s dist -l $PORT
+    environment_slug: node-js
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    envs:
+      - key: NODE_VERSION
+        value: "18"
+      - key: PORT
+        value: "8080"
+      - key: VITE_API_URL
+        value: "https://backend-${APP_NAME}.ondigitalocean.app"
+    routes:
+      - path: /
+    http_port: 8080
+
+envs:
+  - key: NODE_ENV
+    value: production
+  - key: PYTHONUNBUFFERED
+    value: "1" 

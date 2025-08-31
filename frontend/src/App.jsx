@@ -2,6 +2,9 @@ import { useState } from 'react';
 import './App.css';
 import HoldingsTable from './components/HoldingsTable';
 
+// Get API URL from environment variable or default to localhost
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 function App() {
     const [cik, setCik] = useState('');
     const [holdings, setHoldings] = useState([]);
@@ -19,7 +22,7 @@ function App() {
         setHoldings([]);
 
         try {
-            const response = await fetch(`http://localhost:8000/filers/${cik.trim()}/holdings`);
+            const response = await fetch(`${API_BASE_URL}/filers/${cik.trim()}/holdings`);
             
             if (!response.ok) {
                 const errorData = await response.json();

@@ -2,14 +2,20 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 from lxml import etree
+import os
 
 from crud import validate_and_normalize_cik
 
 app = FastAPI()
 
+# CORS configuration for production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",  # Development
+        "https://*.ondigitalocean.app",  # DigitalOcean App Platform
+        "https://*.digitaloceanspaces.com",  # DigitalOcean Spaces
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,13 +27,19 @@ SEC_HEADERS = {
 }
 
 
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for DigitalOcean App Platform"""
+    return {"status": "healthy", "service": "n-port-fetcher-backend"}
+
+
 @app.get("/filers/{cik}/holdings")
 def get_latest_holdings(cik: str):
     cik = validate_and_normalize_cik(cik)
     try:
         submissions_url = f"https://data.sec.gov/submissions/CIK{cik.zfill(10)}.json"
         response = requests.get(submissions_url, headers=SEC_HEADERS)
-        response.raise_for_status()
+        response.raise_for_status()  # Raises an HTTPError for bad responses (4xx or 5xx)
         submissions = response.json()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
@@ -57,7 +69,9 @@ def get_latest_holdings(cik: str):
         xml_response = requests.get(xml_url, headers=SEC_HEADERS)
         xml_response.raise_for_status()
 
+        # Parse the XML content
         tree = etree.fromstring(xml_response.content)
+        # Namespace handling is crucial for SEC XML
         ns = {"ns": tree.nsmap.get(None)}
 
         holdings = []
