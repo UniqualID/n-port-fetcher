@@ -13,7 +13,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",  # Development
-        "https://*.vercel.app",  # Vercel domains
+        "https://n-port-fetcher.vercel.app",  # Your specific Vercel domain
+        "https://*.vercel.app",  # All Vercel domains
         "https://*.railway.app",  # Railway domains
     ],
     allow_credentials=True,
