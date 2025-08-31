@@ -160,6 +160,17 @@
 	border-bottom: 2px solid var(--base-variant-clr);
 }
 
+/* Sortable header styles */
+.sortable-header {
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 0.2s;
+}
+
+.sortable-header:hover {
+	background: var(--hover-clr) !important;
+}
+
 /* Right-align the Balance and Value headers */
 .holdings-table th:nth-child(3),
 .holdings-table th:nth-child(4) {
