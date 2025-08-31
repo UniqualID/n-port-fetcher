@@ -1,131 +1,106 @@
-# N-Port Fetcher
+# N-Port Fetcher Backend
 
-A web application to fetch and display holdings from SEC N-PORT filings. Built with React frontend and FastAPI backend.
+FastAPI backend service for fetching SEC N-PORT holdings data. This repository contains only the backend code for Railway deployment.
 
 ## Features
 
-- Search holdings by CIK (Central Index Key)
-- Sortable holdings table (by Name, Balance, Value)
-- Real-time data from SEC filings
-- Responsive design
-- Clean, modern UI
+- Fetch holdings data from SEC N-PORT filings by CIK
+- RESTful API with automatic documentation
+- Health check endpoint for monitoring
+- CORS configured for frontend integration
 
 ## Tech Stack
 
-- **Frontend**: React + Vite
-- **Backend**: FastAPI + Python
-- **Deployment**: DigitalOcean App Platform
+- **Framework**: FastAPI
+- **Language**: Python 3.11
+- **Deployment**: Railway
+
+## API Endpoints
+
+- `GET /health` - Health check endpoint
+- `GET /filers/{cik}/holdings` - Get holdings for a CIK
+- `GET /docs` - Interactive API documentation (Swagger UI)
+- `GET /redoc` - Alternative API documentation
 
 ## Local Development
 
 ### Prerequisites
 
-- Node.js 18+
 - Python 3.11+
 - Git
 
-### Backend Setup
+### Setup
 
 ```bash
+# Clone the repository
+git clone https://github.com/uniqualid/n-port-fetcher.git
+cd n-port-fetcher
+
+# Install dependencies
+pip install -r backend/requirements.txt
+
+# Run the development server
 cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Frontend Setup
+The API will be available at:
+- API: http://localhost:8000
+- Documentation: http://localhost:8000/docs
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## Railway Deployment
 
-The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+This branch is configured for Railway deployment with:
 
-## Deployment to DigitalOcean App Platform
+- `railway.json` - Railway configuration
+- `Procfile` - Startup command
+- `runtime.txt` - Python version specification
 
-### Prerequisites
+### Deploy to Railway
 
-1. DigitalOcean account
-2. GitHub repository with your code
-3. DigitalOcean CLI (optional)
-
-### Deployment Steps
-
-1. **Push your code to GitHub**:
-   ```bash
-   git add .
-   git commit -m "Prepare for deployment"
-   git push origin main
-   ```
-
-2. **Create DigitalOcean App**:
-   - Go to [DigitalOcean App Platform](https://cloud.digitalocean.com/apps)
-   - Click "Create App"
-   - Connect your GitHub repository
-   - Select the repository: `your-username/n-port-fetcher`
-
-3. **Configure Backend Service**:
-   - Source Directory: `/backend`
-   - Environment: Python
-   - Build Command: (leave empty)
-   - Run Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-   - Instance Size: Basic XXS ($5/month)
-
-4. **Configure Frontend Service**:
-   - Source Directory: `/frontend`
-   - Environment: Node.js
-   - Build Command: `npm run build`
-   - Run Command: `npm start`
-   - Instance Size: Basic XXS ($5/month)
-
-5. **Set Environment Variables**:
-   - For Frontend:
-     - `VITE_API_URL`: `https://backend-{app-name}.ondigitalocean.app`
-   - For Backend:
-     - `PYTHON_VERSION`: `3.11`
-
-6. **Deploy**:
-   - Click "Create Resources"
-   - Wait for deployment to complete
+1. Go to [Railway Dashboard](https://railway.app/dashboard)
+2. Click "New Project"
+3. Select "Deploy from GitHub repo"
+4. Choose this repository and the `railway-backend` branch
+5. Railway will automatically detect the Python configuration and deploy
 
 ### Environment Variables
 
-The application uses these environment variables:
+Railway will automatically set:
+- `PORT` - Port number for the service
+- `PYTHON_VERSION` - Python version (3.11)
 
-- `VITE_API_URL`: Backend API URL (set automatically by DigitalOcean)
-- `PORT`: Port number (set automatically by DigitalOcean)
+## Usage
 
-## API Endpoints
+### Example API Call
 
-- `GET /health` - Health check
-- `GET /filers/{cik}/holdings` - Get holdings for a CIK
-- `GET /docs` - Interactive API documentation
+```bash
+curl "https://your-railway-app.railway.app/filers/0000320193/holdings"
+```
+
+### Example Response
+
+```json
+[
+  {
+    "name": "APPLE INC",
+    "cusip": "037833100",
+    "balance": 1000000.0,
+    "value": 150000000.0
+  }
+]
+```
 
 ## Project Structure
 
 ```
-n-port-fetcher/
-├── .do/
-│   └── app.yaml          # DigitalOcean App Platform config
-├── backend/
-│   ├── main.py           # FastAPI application
-│   ├── crud.py           # Data validation utilities
-│   └── requirements.txt  # Python dependencies
-├── frontend/
-│   ├── src/
-│   │   ├── App.jsx       # Main application component
-│   │   ├── components/
-│   │   │   └── HoldingsTable.jsx  # Holdings table component
-│   │   └── App.css       # Styles
-│   ├── package.json      # Node.js dependencies
-│   └── vite.config.js    # Vite configuration
-└── README.md
+backend/
+├── main.py           # FastAPI application
+├── crud.py           # Data validation utilities
+├── requirements.txt  # Python dependencies
+├── railway.json      # Railway configuration
+├── Procfile          # Railway startup command
+└── runtime.txt       # Python version
 ```
 
 ## Contributing
