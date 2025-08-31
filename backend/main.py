@@ -13,8 +13,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",  # Development
-        "https://*.ondigitalocean.app",  # DigitalOcean App Platform
-        "https://*.digitaloceanspaces.com",  # DigitalOcean Spaces
+        "https://*.vercel.app",  # Vercel domains
+        "https://*.railway.app",  # Railway domains
     ],
     allow_credentials=True,
     allow_methods=["*"],
