@@ -27,7 +27,7 @@ def get_latest_holdings(cik: str):
     try:
         submissions_url = f"https://data.sec.gov/submissions/CIK{cik.zfill(10)}.json"
         response = requests.get(submissions_url, headers=SEC_HEADERS)
-        response.raise_for_status()  # Raises an HTTPError for bad responses (4xx or 5xx)
+        response.raise_for_status()
         submissions = response.json()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
@@ -57,9 +57,7 @@ def get_latest_holdings(cik: str):
         xml_response = requests.get(xml_url, headers=SEC_HEADERS)
         xml_response.raise_for_status()
 
-        # Parse the XML content
         tree = etree.fromstring(xml_response.content)
-        # Namespace handling is crucial for SEC XML
         ns = {"ns": tree.nsmap.get(None)}
 
         holdings = []
