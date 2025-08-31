@@ -7,6 +7,7 @@
 	color: rgba(255, 255, 255, 0.87);
 	background-color: #242424;
 
+
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -70,4 +71,9 @@ button:focus-visible {
 	button {
 		background-color: #f9f9f9;
 	}
+}
+
+#root {
+	width: 100%;
+	max-width: 100%;
 }

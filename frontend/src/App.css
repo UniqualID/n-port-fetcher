@@ -1,8 +1,20 @@
 .app {
-	max-width: 1200px;
 	margin: 0 auto;
 	padding: 20px;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+
+	/* Color variables */
+	--base-clr: #f8f9fa;
+	--base-variant-clr: #dee2e6;
+	--line-clr: #cecece;
+	--hover-clr: #e9ecef;
+	--text-clr: #212529;
+	--text-clr-opaque: #21252974;
+	--accent-clr: #4361ee;
+	--secondary-text-clr: #495057;
+	--secondary-text-clr: #b0b3c1;
+	--box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	--max-width: 1200px;
 }
 
 .app-header {
@@ -11,12 +23,12 @@
 }
 
 .app-header h1 {
-	color: #333;
+	color: var(--text-clr);
 	margin-bottom: 10px;
 }
 
 .app-header p {
-	color: #666;
+	color: var(--secondary-text-clr);
 	font-size: 16px;
 }
 
@@ -24,6 +36,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
+	align-items: center;
 }
 
 .cik-form {
@@ -33,25 +46,27 @@
 	max-width: 400px;
 	margin: 0 auto;
 	padding: 30px;
-	background: #f8f9fa;
+	background: var(--base-clr);
 	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	box-shadow: var(--box-shadow);
+	width: 100%;
 }
 
 .input-group {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
+	text-align: left;
 }
 
 .input-group label {
 	font-weight: 600;
-	color: #333;
+	color: var(--text-clr);
 }
 
 .input-group input {
 	padding: 12px;
-	border: 1px solid #ddd;
+	border: 1px solid var(--base-variant-clr);
 	border-radius: 4px;
 	font-size: 16px;
 	transition: border-color 0.2s;
@@ -59,13 +74,13 @@
 
 .input-group input:focus {
 	outline: none;
-	border-color: #007bff;
-	box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+	border-color: var(--accent-clr);
+	box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.25);
 }
 
 .cik-form button {
 	padding: 12px 24px;
-	background: #007bff;
+	background: var(--accent-clr);
 	color: white;
 	border: none;
 	border-radius: 4px;
@@ -76,11 +91,11 @@
 }
 
 .cik-form button:hover:not(:disabled) {
-	background: #0056b3;
+	background: #3a56d4;
 }
 
 .cik-form button:disabled {
-	background: #ccc;
+	background: var(--line-clr);
 	cursor: not-allowed;
 }
 
@@ -91,34 +106,38 @@
 	border-radius: 4px;
 	border: 1px solid #f5c6cb;
 	text-align: center;
+	max-width: 400px;
+	width: 100%;
 }
 
 .loading {
 	text-align: center;
 	padding: 20px;
-	color: #666;
+	color: var(--secondary-text-clr);
 }
 
 .holdings-container {
 	background: white;
 	border-radius: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	box-shadow: var(--box-shadow);
 	overflow: hidden;
+	width: 100%;
+	max-width: var(--max-width);
 }
 
 .holdings-container h2 {
 	margin: 0;
 	padding: 20px;
-	background: #f8f9fa;
-	border-bottom: 1px solid #dee2e6;
-	color: #333;
+	background: var(--base-clr);
+	border-bottom: 1px solid var(--base-variant-clr);
+	color: var(--text-clr);
 }
 
 .holdings-count {
 	margin: 0;
 	padding: 15px 20px;
-	background: #e9ecef;
-	color: #495057;
+	background: var(--hover-clr);
+	color: var(--secondary-text-clr);
 	font-size: 14px;
 }
 
@@ -133,22 +152,33 @@
 }
 
 .holdings-table th {
-	background: #f8f9fa;
+	background: var(--base-clr);
 	padding: 12px 15px;
 	text-align: left;
 	font-weight: 600;
-	color: #333;
-	border-bottom: 2px solid #dee2e6;
+	color: var(--text-clr);
+	border-bottom: 2px solid var(--base-variant-clr);
+}
+
+/* Right-align the Balance and Value headers */
+.holdings-table th:nth-child(3),
+.holdings-table th:nth-child(4) {
+	text-align: right;
 }
 
 .holdings-table td {
 	padding: 12px 15px;
-	border-bottom: 1px solid #dee2e6;
-	color: #333;
+	border-bottom: 1px solid var(--base-variant-clr);
+	color: var(--text-clr);
+}
+
+/* Every 2nd row (even rows) should be grey */
+.holdings-table tr:nth-child(even) {
+	background: var(--base-clr);
 }
 
 .holdings-table tr:hover {
-	background: #f8f9fa;
+	background: var(--hover-clr) !important;
 }
 
 .holdings-table td:nth-child(3),
